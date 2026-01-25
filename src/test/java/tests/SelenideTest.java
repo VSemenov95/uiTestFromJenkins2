@@ -4,14 +4,14 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import helpers.Attach;
+
+import java.util.Map;
 
 import static com.codeborne.selenide.Selectors.withText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 import static org.openqa.selenium.By.linkText;
 
@@ -24,14 +24,29 @@ public class SelenideTest {
     public static void preCondition() {
         Configuration.baseUrl = "https://github.com";
         Configuration.browserSize = "1920x1080";
-        Configuration.browserVersion = "128.0";
         Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
+                "enableVNC", true,
+                "enableVideo", true
+        ));
+        Configuration.browserCapabilities = capabilities;
     }
 
     @BeforeEach
     public void setup() {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
+
+    @AfterEach
+    void addAttachments() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
+        closeWebDriver();
+    }
+
 
     @Test
     @DisplayName("Поиск issues по номеру. Реализация: Чистый Selenide с Listener")
