@@ -13,14 +13,14 @@ public class WebSteps {
         open("");
     }
 
-    @Step("Найти репозиторий {repo}")
+    @Step("Найти репозиторий  {repo}")
     public void searchForRepository(String repo) {
         $(".search-input").click();
         $("#query-builder-test").sendKeys(repo);
         $("#query-builder-test").submit();
     }
 
-    @Step("Перейти в найденный репозиторий {repo}")
+    @Step("Перейти в найденный репозиторий  {repo}")
     public void clickOnRepositoryLink(String repo) {
         $(linkText(repo)).click();
     }

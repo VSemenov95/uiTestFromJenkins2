@@ -23,6 +23,9 @@ public class SelenideTest {
     @BeforeAll
     public static void preCondition() {
         Configuration.baseUrl = "https://github.com";
+        Configuration.browserSize = "1920x1080";
+        Configuration.browserVersion = "128.0";
+        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
     }
 
     @BeforeEach
@@ -48,7 +51,7 @@ public class SelenideTest {
         step("Открыть главную страницу", () -> {
             open("");
         });
-        step("Найти репозиторий" + REPOSITORY, () -> {
+        step("Найти репозиторий " + REPOSITORY, () -> {
             $(".search-input").click();
             $("#query-builder-test").sendKeys(REPOSITORY);
             $("#query-builder-test").submit();
