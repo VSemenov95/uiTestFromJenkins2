@@ -29,12 +29,10 @@ public class SelenideTest {
         Configuration.browser = webConfig.getBrowserName();
         Configuration.baseUrl = webConfig.getBaseUrl();
         Configuration.browserSize = webConfig.getBrowserSize();
+        Configuration.browserVersion = webConfig.getBrowserVersion();
         Configuration.remote = webConfig.getRemoteURL();
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
-                "enableVNC", true,
-                "enableVideo", true
-        ));
+        capabilities.setCapability("selenoid:options", Map.<String, Object>of("enableVNC", true, "enableVideo", true));
         Configuration.browserCapabilities = capabilities;
     }
 
