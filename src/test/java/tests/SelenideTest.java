@@ -3,7 +3,9 @@ package tests;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import config.WebConfig;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import helpers.Attach;
@@ -19,12 +21,15 @@ import static org.openqa.selenium.By.linkText;
 public class SelenideTest {
     private final static String REPOSITORY = "VSemenov95/homeWorkAllure";
     private static final int ISSUE = 1;
+    private static final WebConfig webConfig = ConfigFactory.create(WebConfig.class, System.getProperties());
 
     @BeforeAll
     public static void preCondition() {
-        Configuration.baseUrl = "https://github.com";
-        Configuration.browserSize = "1920x1080";
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+
+        Configuration.browser = webConfig.getBrowserName();
+        Configuration.baseUrl = webConfig.getBaseUrl();
+        Configuration.browserSize = webConfig.getBrowserSize();
+        Configuration.remote = webConfig.getRemoteURL();
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
                 "enableVNC", true,
